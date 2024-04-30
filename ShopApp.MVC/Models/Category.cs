@@ -7,8 +7,9 @@ namespace ShopApp.MVC.Models
     {
         [Key]
         public int Id { get; set; }
+		//public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
+		[Required]
         public string Name { get; set; } = "Default";
 
         [DisplayName("Display Order")]
