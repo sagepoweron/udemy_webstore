@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopApp.MVC.Models;
 using System.Numerics;
+using ShopApp.MVC.Models.Products;
 
 namespace ShopApp.MVC.Data
 {
@@ -12,6 +13,7 @@ namespace ShopApp.MVC.Data
         {
         }
         public DbSet<Category> Category { get; set; } = default!;
+		public DbSet<VideoGame> VideoGame { get; set; } = default!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -33,7 +35,18 @@ namespace ShopApp.MVC.Data
 
 			modelBuilder.Entity<Category>().HasData(category1, category2);
 
+			VideoGame videogame1 = new()
+			{
+				Id = Guid.NewGuid(),
+				Name = "Test Game",
+				ListPrice = 50
+			};
+
+			modelBuilder.Entity<VideoGame>().HasData(videogame1);
+
 			base.OnModelCreating(modelBuilder);
 		}
-	}
+        
+
+    }
 }

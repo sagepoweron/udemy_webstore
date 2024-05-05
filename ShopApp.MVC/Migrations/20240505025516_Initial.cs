@@ -67,6 +67,20 @@ namespace ShopApp.MVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VideoGame",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    ListPrice = table.Column<double>(type: "REAL", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VideoGame", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -181,6 +195,11 @@ namespace ShopApp.MVC.Migrations
                     { 2, 2, "Videogames" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "VideoGame",
+                columns: new[] { "Id", "Description", "ListPrice", "Name" },
+                values: new object[] { new Guid("d9b756cf-b18d-4f79-a442-8ac7b4c79e2d"), null, 50.0, "Test Game" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -239,6 +258,9 @@ namespace ShopApp.MVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "Category");
+
+            migrationBuilder.DropTable(
+                name: "VideoGame");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

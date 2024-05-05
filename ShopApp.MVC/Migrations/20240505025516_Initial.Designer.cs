@@ -11,7 +11,7 @@ using ShopApp.MVC.Data;
 namespace ShopApp.MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240430033615_Initial")]
+    [Migration("20240505025516_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -245,6 +245,35 @@ namespace ShopApp.MVC.Migrations
                             Id = 2,
                             DisplayOrder = 2,
                             Name = "Videogames"
+                        });
+                });
+
+            modelBuilder.Entity("ShopApp.MVC.Models.Products.VideoGame", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("ListPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VideoGame");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d9b756cf-b18d-4f79-a442-8ac7b4c79e2d"),
+                            ListPrice = 50.0,
+                            Name = "Test Game"
                         });
                 });
 

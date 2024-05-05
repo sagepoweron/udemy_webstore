@@ -6,101 +6,91 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.MVC.Data;
-using ShopApp.MVC.Models;
+using ShopApp.MVC.Models.Products;
 
 namespace ShopApp.MVC.Controllers
 {
-    public class CategoriesController : Controller
+    public class VideoGamesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public VideoGamesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Categories
+        // GET: VideoGames
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.VideoGame.ToListAsync());
         }
-        //public async Task<IActionResult> Index()
-        //{
-        //          IEnumerable<SelectListItem> CategoryList = _context.Category.Select(u => new SelectListItem
-        //          {
-        //              Text = u.Name,
-        //              Value = u.Id.ToString()
-        //          });
 
-        //	return View(await _context.Category.ToListAsync());
-        //}
-
-
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: VideoGames/Details/5
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var videoGame = await _context.VideoGame
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (videoGame == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(videoGame);
         }
 
-        // GET: Categories/Create
+        // GET: VideoGames/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: VideoGames/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DisplayOrder")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,ListPrice")] VideoGame videoGame)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                videoGame.Id = Guid.NewGuid();
+                _context.Add(videoGame);
                 await _context.SaveChangesAsync();
-                TempData["success"] = "Category Created";
+                TempData["success"] = "Product Created";
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(videoGame);
         }
 
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: VideoGames/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
+            var videoGame = await _context.VideoGame.FindAsync(id);
+            if (videoGame == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(videoGame);
         }
 
-        // POST: Categories/Edit/5
+        // POST: VideoGames/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DisplayOrder")] Category category)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,ListPrice")] VideoGame videoGame)
         {
-            if (id != category.Id)
+            if (id != videoGame.Id)
             {
                 return NotFound();
             }
@@ -109,12 +99,12 @@ namespace ShopApp.MVC.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(videoGame);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!VideoGameExists(videoGame.Id))
                     {
                         return NotFound();
                     }
@@ -123,49 +113,49 @@ namespace ShopApp.MVC.Controllers
                         throw;
                     }
                 }
-				TempData["success"] = "Category Updated";
-				return RedirectToAction(nameof(Index));
+                TempData["success"] = "Product Updated";
+                return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(videoGame);
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: VideoGames/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var videoGame = await _context.VideoGame
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (videoGame == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(videoGame);
         }
 
-        // POST: Categories/Delete/5
+        // POST: VideoGames/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category != null)
+            var videoGame = await _context.VideoGame.FindAsync(id);
+            if (videoGame != null)
             {
-                _context.Category.Remove(category);
+                _context.VideoGame.Remove(videoGame);
             }
 
             await _context.SaveChangesAsync();
-			TempData["success"] = "Category Deleted";
-			return RedirectToAction(nameof(Index));
+            TempData["success"] = "Product Deleted";
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool VideoGameExists(Guid id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.VideoGame.Any(e => e.Id == id);
         }
     }
 }

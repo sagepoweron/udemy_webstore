@@ -245,6 +245,35 @@ namespace ShopApp.MVC.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ShopApp.MVC.Models.Products.VideoGame", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("ListPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VideoGame");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d9b756cf-b18d-4f79-a442-8ac7b4c79e2d"),
+                            ListPrice = 50.0,
+                            Name = "Test Game"
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)

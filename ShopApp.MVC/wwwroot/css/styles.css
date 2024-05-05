@@ -1,0 +1,151 @@
+/*html {
+	font-size: 14px;
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+	box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	margin-bottom: 60px;
+}*/
+
+
+
+
+/*#title
+{
+color: white;
+background-color: lightgreen;
+border: 2px solid red;
+padding:20px;
+font-weight: bold;
+}*/
+h1, h2
+{
+color: lightblue;
+text-align: center;
+}
+h3
+{
+text-align: center;
+}
+/*body
+{
+//background-image: url("images/background.jpg");
+//background-color: darkgray;
+background-color: white;
+}*/
+
+/*div
+{
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}*/
+
+button
+{
+/*background-color: #e7e7e7;*/
+background-color: white;
+border: none;
+border-radius: 16px;
+font-size: 24px;
+padding: 16px;
+box-shadow: inset 0 0 0 0 #54b3d6;
+color: #54b3d6;
+
+/*transition: color .5s ease-in-out, box-shadow .5s ease-in-out;*/
+transition: all 1s;
+}
+button:hover
+{
+background-color: #54b3d6;
+/*box-shadow: inset 100px 0 0 0 #54b3d6;*/
+color: white;
+
+transform: scale(1.25);
+}
+
+nav
+/*.navigation*/
+{
+/*position: fixed;*/
+/*top: 0;*/
+width: 100%;
+margin-bottom: 40px;
+/*display: flex;*/
+/*justify-content: space-between;*/
+/*border: 1px solid #e7e7e7;*/
+/*background-color: gray;//#333333;*/
+}
+nav a
+/*.navigation a*/
+{
+/*display: inline-block;
+default for a is inline;
+display: block;
+text-align: center;*/
+padding: 16px;
+text-decoration: none;
+box-shadow: inset 0 0 0 0 #54b3d6;
+color: #54b3d6;
+/*margin: 0 -.25rem;
+transition: all 1s ease;*/
+transition: color .5s ease-in-out, box-shadow .5s ease-in-out;
+}
+nav a:hover
+/*.navigation a:hover:not(.active)*/
+{
+box-shadow: inset 200px 0 0 0 #54b3d6;
+color: white;
+}
+/*.navigation a.active*/
+/*{
+color: white;
+box-shadow: inset 100px 0 0 0 #54b3d6;
+}*/
+/*.navigation a.active:hover
+{
+color: #54b3d6;
+box-shadow: inset 0 0 0 0 #54b3d6;
+}*/
+
+
+
+/*footer
+{*/
+/*position: fixed;
+position: sticky;
+bottom: 0;*/
+/*width: 100%;
+height: 40px;
+border: 1px solid #e7e7e7;
+background-color: gray;//#333333;*/
+/*background-color: #777;
+padding: 8px;
+text-align: center;
+vertical-align: middle;*/
+/*margin-top: 800px;
+color: white;
+}*/
+
+/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
+/*@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}*/
+
