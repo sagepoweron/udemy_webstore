@@ -1,4 +1,4 @@
-namespace ShopApp.MVC.Models
+namespace ShopApp.DataAccess.Models
 {
     public class ErrorViewModel
     {

@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ShopApp.MVC.Models
+namespace ShopApp.DataAccess.Models
 {
     public class Category
     {
         [Key]
         public int Id { get; set; }
-		//public Guid Id { get; set; } = Guid.NewGuid();
+        //public Guid Id { get; set; } = Guid.NewGuid();
 
-		[Required]
+        [Required]
         public string Name { get; set; } = "Default";
 
         [DisplayName("Display Order")]

@@ -25,4 +25,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Customer\Controllers\" />
+    <Folder Include="Areas\Shared\Controllers\" />
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShopApp.Data\ShopApp.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

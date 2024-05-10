@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ShopApp.MVC.Models;
-using System.Numerics;
-using ShopApp.MVC.Models.Products;
+using ShopApp.DataAccess.Models;
+using ShopApp.DataAccess.Models.Products;
 
-namespace ShopApp.MVC.Data
+namespace ShopApp.DataAccess.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
-        public DbSet<Category> Category { get; set; } = default!;
+	public class ApplicationDbContext : IdentityDbContext
+	{
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+			: base(options)
+		{
+		}
+		public DbSet<Category> Category { get; set; } = default!;
 		public DbSet<VideoGame> VideoGame { get; set; } = default!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,7 +27,7 @@ namespace ShopApp.MVC.Data
 			Category category2 = new()
 			{
 				//Id = Guid.NewGuid(),
-				Id= 2,
+				Id = 2,
 				Name = "Videogames",
 				DisplayOrder = 2
 			};
@@ -46,7 +45,7 @@ namespace ShopApp.MVC.Data
 
 			base.OnModelCreating(modelBuilder);
 		}
-        
 
-    }
+
+	}
 }

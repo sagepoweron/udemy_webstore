@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using ShopApp.MVC.Models;
+using ShopApp.DataAccess.Models;
 using System.Diagnostics;
 
 namespace ShopApp.MVC.Controllers
 {
+    //[Area("Shared")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

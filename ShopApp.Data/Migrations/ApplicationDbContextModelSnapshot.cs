@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopApp.MVC.Data;
+using ShopApp.DataAccess.Data;
 
 #nullable disable
 
-namespace ShopApp.MVC.Migrations
+namespace ShopApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -213,7 +213,7 @@ namespace ShopApp.MVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ShopApp.MVC.Models.Category", b =>
+            modelBuilder.Entity("ShopApp.DataAccess.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,7 +245,7 @@ namespace ShopApp.MVC.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ShopApp.MVC.Models.Products.VideoGame", b =>
+            modelBuilder.Entity("ShopApp.DataAccess.Models.Products.VideoGame", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,7 +268,7 @@ namespace ShopApp.MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d9b756cf-b18d-4f79-a442-8ac7b4c79e2d"),
+                            Id = new Guid("a8e7e231-b49e-4969-be76-c4aa125eaa87"),
                             ListPrice = 50.0,
                             Name = "Test Game"
                         });

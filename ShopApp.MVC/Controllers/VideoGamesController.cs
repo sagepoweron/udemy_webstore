@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShopApp.MVC.Data;
-using ShopApp.MVC.Models.Products;
+using ShopApp.DataAccess.Data;
+using ShopApp.DataAccess.Models.Products;
 
 namespace ShopApp.MVC.Controllers
 {
+    //[Area("Shared")]
     public class VideoGamesController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ShopApp.MVC.Data;
+using ShopApp.DataAccess.Data;
+using ShopApp.DataAccess.Repository;
+using ShopApp.DataAccess.Repository.IRepository;
 
 namespace ShopApp.MVC
 {
@@ -20,7 +22,10 @@ namespace ShopApp.MVC
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+
+			builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -40,11 +45,20 @@ namespace ShopApp.MVC
             app.UseRouting();
 
             app.UseAuthorization();
+            
+
+
+
+            //app.MapControllerRoute(name: "MyAreaAdmin", pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
+			app.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+
+
+
+			app.MapRazorPages();
 
             app.Run();
         }

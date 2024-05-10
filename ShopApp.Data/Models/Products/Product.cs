@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopApp.MVC.Models.Products
+namespace ShopApp.DataAccess.Models.Products
 {
     public abstract class Product
     {

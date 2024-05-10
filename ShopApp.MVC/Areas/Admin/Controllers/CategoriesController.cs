@@ -5,24 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShopApp.MVC.Data;
-using ShopApp.MVC.Models;
+using ShopApp.DataAccess.Data;
+using ShopApp.DataAccess.Models;
+using ShopApp.DataAccess.Repository.IRepository;
 
-namespace ShopApp.MVC.Controllers
+namespace ShopApp.MVC.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unit_of_work;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(IUnitOfWork unit_of_work)
         {
-            _context = context;
+            _unit_of_work = unit_of_work;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _unit_of_work.CategoryRepository.GetAllAsync());
         }
         //public async Task<IActionResult> Index()
         //{
@@ -44,8 +46,9 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
+            //var category = await _repository.Category
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -69,8 +72,8 @@ namespace ShopApp.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                _unit_of_work.CategoryRepository.Add(category);
+                await _unit_of_work.SaveAsync();
                 TempData["success"] = "Category Created";
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +88,8 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
+            //var category = await _repository.Category.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -109,8 +113,8 @@ namespace ShopApp.MVC.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    _unit_of_work.CategoryRepository.Update(category);
+                    await _unit_of_work.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +127,8 @@ namespace ShopApp.MVC.Controllers
                         throw;
                     }
                 }
-				TempData["success"] = "Category Updated";
-				return RedirectToAction(nameof(Index));
+                TempData["success"] = "Category Updated";
+                return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
@@ -137,8 +141,9 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
+            //var category = await _repository.Category
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -152,20 +157,21 @@ namespace ShopApp.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
+            //var category = await _repository.Category.FindAsync(id);
             if (category != null)
             {
-                _context.Category.Remove(category);
+                _unit_of_work.CategoryRepository.Remove(category);
             }
 
-            await _context.SaveChangesAsync();
-			TempData["success"] = "Category Deleted";
-			return RedirectToAction(nameof(Index));
+            await _unit_of_work.SaveAsync();
+            TempData["success"] = "Category Deleted";
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _unit_of_work.CategoryRepository.Exists(e => e.Id == id);
         }
     }
 }

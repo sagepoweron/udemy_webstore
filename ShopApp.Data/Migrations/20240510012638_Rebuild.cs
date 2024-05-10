@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace ShopApp.MVC.Migrations
+namespace ShopApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Rebuild : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -198,7 +198,7 @@ namespace ShopApp.MVC.Migrations
             migrationBuilder.InsertData(
                 table: "VideoGame",
                 columns: new[] { "Id", "Description", "ListPrice", "Name" },
-                values: new object[] { new Guid("d9b756cf-b18d-4f79-a442-8ac7b4c79e2d"), null, 50.0, "Test Game" });
+                values: new object[] { new Guid("a8e7e231-b49e-4969-be76-c4aa125eaa87"), null, 50.0, "Test Game" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
