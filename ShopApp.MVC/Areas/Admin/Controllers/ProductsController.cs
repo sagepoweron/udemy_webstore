@@ -6,27 +6,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Data;
-using ShopApp.DataAccess.Models.Products;
+using ShopApp.DataAccess.Models;
 
-namespace ShopApp.MVC.Controllers
+namespace ShopApp.MVC.Areas.Admin.Controllers
 {
-    //[Area("Shared")]
-    public class VideoGamesController : Controller
+    [Area("Admin")]
+    public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public VideoGamesController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: VideoGames
+        // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VideoGame.ToListAsync());
+            var shopAppMVCContext = _context.Product.Include(p => p.Category);
+            return View(await shopAppMVCContext.ToListAsync());
         }
 
-        // GET: VideoGames/Details/5
+        // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,41 +35,43 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var videoGame = await _context.VideoGame
+            var product = await _context.Product
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (videoGame == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(videoGame);
+            return View(product);
         }
 
-        // GET: VideoGames/Create
+        // GET: Admin/Products/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
             return View();
         }
 
-        // POST: VideoGames/Create
+        // POST: Admin/Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,ListPrice")] VideoGame videoGame)
+        public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product)
         {
             if (ModelState.IsValid)
             {
-                videoGame.Id = Guid.NewGuid();
-                _context.Add(videoGame);
+                product.Id = Guid.NewGuid();
+                _context.Add(product);
                 await _context.SaveChangesAsync();
-                TempData["success"] = "Product Created";
                 return RedirectToAction(nameof(Index));
             }
-            return View(videoGame);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
+            return View(product);
         }
 
-        // GET: VideoGames/Edit/5
+        // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -76,22 +79,23 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var videoGame = await _context.VideoGame.FindAsync(id);
-            if (videoGame == null)
+            var product = await _context.Product.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(videoGame);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
+            return View(product);
         }
 
-        // POST: VideoGames/Edit/5
+        // POST: Admin/Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,ListPrice")] VideoGame videoGame)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product)
         {
-            if (id != videoGame.Id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -100,12 +104,12 @@ namespace ShopApp.MVC.Controllers
             {
                 try
                 {
-                    _context.Update(videoGame);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VideoGameExists(videoGame.Id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -114,13 +118,13 @@ namespace ShopApp.MVC.Controllers
                         throw;
                     }
                 }
-                TempData["success"] = "Product Updated";
                 return RedirectToAction(nameof(Index));
             }
-            return View(videoGame);
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
+            return View(product);
         }
 
-        // GET: VideoGames/Delete/5
+        // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -128,35 +132,35 @@ namespace ShopApp.MVC.Controllers
                 return NotFound();
             }
 
-            var videoGame = await _context.VideoGame
+            var product = await _context.Product
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (videoGame == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(videoGame);
+            return View(product);
         }
 
-        // POST: VideoGames/Delete/5
+        // POST: Admin/Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var videoGame = await _context.VideoGame.FindAsync(id);
-            if (videoGame != null)
+            var product = await _context.Product.FindAsync(id);
+            if (product != null)
             {
-                _context.VideoGame.Remove(videoGame);
+                _context.Product.Remove(product);
             }
 
             await _context.SaveChangesAsync();
-            TempData["success"] = "Product Deleted";
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VideoGameExists(Guid id)
+        private bool ProductExists(Guid id)
         {
-            return _context.VideoGame.Any(e => e.Id == id);
+            return _context.Product.Any(e => e.Id == id);
         }
     }
 }

@@ -1,51 +1,52 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Models;
-using ShopApp.DataAccess.Models.Products;
 
 namespace ShopApp.DataAccess.Data
 {
-	public class ApplicationDbContext : IdentityDbContext
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-			: base(options)
-		{
-		}
-		public DbSet<Category> Category { get; set; } = default!;
-		public DbSet<VideoGame> VideoGame { get; set; } = default!;
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Category> Category { get; set; } = default!;
+		public DbSet<Product> Product { get; set; } = default!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			Category category1 = new()
 			{
-				//Id = Guid.NewGuid(),
-				Id = 1,
+				Id = Guid.NewGuid(),
 				Name = "Movies",
 				DisplayOrder = 1
 			};
 
 			Category category2 = new()
 			{
-				//Id = Guid.NewGuid(),
-				Id = 2,
+				Id = Guid.NewGuid(),
 				Name = "Videogames",
 				DisplayOrder = 2
 			};
 
 			modelBuilder.Entity<Category>().HasData(category1, category2);
 
-			VideoGame videogame1 = new()
+			Product product1 = new()
 			{
 				Id = Guid.NewGuid(),
 				Name = "Test Game",
-				ListPrice = 50
+				CategoryId = category2.Id,
+				ListPrice = 60,
+				SalePrice = 50
 			};
 
-			modelBuilder.Entity<VideoGame>().HasData(videogame1);
+			modelBuilder.Entity<Product>().HasData(product1);
 
 			base.OnModelCreating(modelBuilder);
 		}
-
-
 	}
 }

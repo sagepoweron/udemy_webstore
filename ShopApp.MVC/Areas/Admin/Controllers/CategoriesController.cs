@@ -7,48 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Data;
 using ShopApp.DataAccess.Models;
-using ShopApp.DataAccess.Repository.IRepository;
 
 namespace ShopApp.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoriesController : Controller
     {
-        private readonly IUnitOfWork _unit_of_work;
+        private readonly ApplicationDbContext _context;
 
-        public CategoriesController(IUnitOfWork unit_of_work)
+        public CategoriesController(ApplicationDbContext context)
         {
-            _unit_of_work = unit_of_work;
+            _context = context;
         }
 
-        // GET: Categories
+        // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _unit_of_work.CategoryRepository.GetAllAsync());
+            return View(await _context.Category.ToListAsync());
         }
-        //public async Task<IActionResult> Index()
-        //{
-        //          IEnumerable<SelectListItem> CategoryList = _context.Category.Select(u => new SelectListItem
-        //          {
-        //              Text = u.Name,
-        //              Value = u.Id.ToString()
-        //          });
 
-        //	return View(await _context.Category.ToListAsync());
-        //}
-
-
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Admin/Categories/Details/5
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
-            //var category = await _repository.Category
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -57,13 +44,13 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
+        // GET: Admin/Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: Admin/Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -72,24 +59,23 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unit_of_work.CategoryRepository.Add(category);
-                await _unit_of_work.SaveAsync();
-                TempData["success"] = "Category Created";
+                category.Id = Guid.NewGuid();
+                _context.Add(category);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Admin/Categories/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
-            //var category = await _repository.Category.FindAsync(id);
+            var category = await _context.Category.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -97,12 +83,12 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Categories/Edit/5
+        // POST: Admin/Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DisplayOrder")] Category category)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,DisplayOrder")] Category category)
         {
             if (id != category.Id)
             {
@@ -113,8 +99,8 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
             {
                 try
                 {
-                    _unit_of_work.CategoryRepository.Update(category);
-                    await _unit_of_work.SaveAsync();
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,23 +113,21 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                TempData["success"] = "Category Updated";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Admin/Categories/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
-            //var category = await _repository.Category
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -152,26 +136,24 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
+        // POST: Admin/Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var category = await _unit_of_work.CategoryRepository.GetAsync(u => u.Id == id);
-            //var category = await _repository.Category.FindAsync(id);
+            var category = await _context.Category.FindAsync(id);
             if (category != null)
             {
-                _unit_of_work.CategoryRepository.Remove(category);
+                _context.Category.Remove(category);
             }
 
-            await _unit_of_work.SaveAsync();
-            TempData["success"] = "Category Deleted";
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool CategoryExists(Guid id)
         {
-            return _unit_of_work.CategoryRepository.Exists(e => e.Id == id);
+            return _context.Category.Any(e => e.Id == id);
         }
     }
 }
