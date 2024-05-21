@@ -7,7 +7,7 @@ namespace ShopApp.DataAccess.Repository
 	{
 		public ICategoryRepository CategoryRepository { get; private set; }
 
-        public IProductRepository ProductRepository => throw new NotImplementedException();
+        public IProductRepository ProductRepository { get; private set; }
 
         private readonly ApplicationDbContext _context;
 
@@ -15,6 +15,7 @@ namespace ShopApp.DataAccess.Repository
 		{
 			_context = context;
 			CategoryRepository = new CategoryRepository(_context);
+			ProductRepository = new ProductRepository(_context);
 		}
 
 		//public Task SaveAsync()

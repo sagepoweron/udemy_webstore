@@ -1,56 +1,101 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Data;
-using ShopApp.DataAccess.Models;
 using ShopApp.DataAccess.Repository.IRepository;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace ShopApp.DataAccess.Repository
 {
-	public class Repository<T> : IRepository<T> where T : class
-	{
-		private readonly ApplicationDbContext _context;
-		private readonly DbSet<T> _dbSet;
+    public class Repository<T> : IRepository<T> where T : class
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly DbSet<T> _dbSet;
 
         public Repository(ApplicationDbContext context)
-		{
-			_context = context;
-			_dbSet = _context.Set<T>();
-		}
+        {
+            _context = context;
+            _dbSet = _context.Set<T>();
+            _context.Product.Include(u => u.Category);
+        }
 
-		public void Add(T entity)
-		{
-			_dbSet.Add(entity);
-		}
+        public void Add(T entity)
+        {
+            _dbSet.Add(entity);
+        }
 
-		public async Task<T?> GetAsync(Expression<Func<T, bool>> expression)
-		{
-			IQueryable<T> query = _dbSet.Where(expression);
-			return await query.FirstOrDefaultAsync();
-		}
+        public T? Get(Expression<Func<T, bool>> expression, string? include_properties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(expression);
 
-		public IEnumerable<T> GetAll()
-		{
-			return _dbSet.ToList();
-		}
-		public async Task<IEnumerable<T>> GetAllAsync()
-		{
-			return await _dbSet.ToListAsync();
-		}
+            if (!string.IsNullOrEmpty(include_properties))
+            {
+                foreach (var include_property in include_properties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query.Include(include_property);
+                }
+            }
 
-		public void Remove(T entity)
-		{
-			_dbSet.Remove(entity);
-		}
+            return query.FirstOrDefault();
+        }
+        public IEnumerable<T> GetAll(string? include_properties = null)
+        {
+            IQueryable<T> query = _dbSet;
 
-		public void RemoveRange(IEnumerable<T> entities)
-		{
-			_dbSet.RemoveRange(entities);
-		}
+            if (!string.IsNullOrEmpty(include_properties))
+            {
+                foreach (var include_property in include_properties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(include_property);
+                }
+            }
 
-		public bool Exists(Expression<Func<T, bool>> expression)
-		{
-			return _dbSet.Any(expression);
-		}
-	}
+            return query.ToList();
+        }
+
+
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> expression, string? include_properties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(expression);
+
+            if (!string.IsNullOrEmpty(include_properties))
+            {
+                foreach (var include_property in include_properties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(include_property);
+                }
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<IEnumerable<T>> GetAllAsync(string? include_properties = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (!string.IsNullOrEmpty(include_properties))
+            {
+                foreach (var include_property in include_properties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(include_property);
+                }
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public void Remove(T entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
+        public bool Exists(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Any(expression);
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using ShopApp.DataAccess.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopApp.DataAccess.Data;
 using ShopApp.DataAccess.Models;
 using ShopApp.DataAccess.Repository.IRepository;
 

@@ -4,13 +4,16 @@ namespace ShopApp.DataAccess.Repository.IRepository
 {
 	public interface IRepository<T> where T : class
 	{
-		IEnumerable<T> GetAll();
-		Task<IEnumerable<T>> GetAllAsync();
-		Task<T?> GetAsync(Expression<Func<T, bool>> expression);
+		//IEnumerable<T> GetAll();
+		//void Update(T entity);
+
 		void Add(T entity);
 		void Remove(T entity);
 		void RemoveRange(IEnumerable<T> entities);
-		//void Update(T entity);
+		
 		bool Exists(Expression<Func<T, bool>> expression);
-	}
+        IEnumerable<T> GetAll(string? include_properties = null);
+        Task<T?> GetAsync(Expression<Func<T, bool>> expression, string? include_properties = null);
+        Task<IEnumerable<T>> GetAllAsync(string? include_properties = null);
+    }
 }

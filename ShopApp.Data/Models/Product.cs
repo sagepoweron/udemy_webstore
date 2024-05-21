@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopApp.DataAccess.Models
 {
-    public class Product
+	public class Product
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Display(Name = "Category ID")]
         public Guid CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category? Category { get; set; }
@@ -23,7 +24,8 @@ namespace ShopApp.DataAccess.Models
         [Display(Name = "Sale Price")]
         [Range(0, 1000)]
         public double SalePrice { get; set; }
-
+		
+        [Display(Name = "Image Path")]
         public string? ImageUrl { get; set; }
     }
 }
