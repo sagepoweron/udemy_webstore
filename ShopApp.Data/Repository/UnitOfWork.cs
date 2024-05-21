@@ -7,7 +7,9 @@ namespace ShopApp.DataAccess.Repository
 	{
 		public ICategoryRepository CategoryRepository { get; private set; }
 
-		private readonly ApplicationDbContext _context;
+        public IProductRepository ProductRepository => throw new NotImplementedException();
+
+        private readonly ApplicationDbContext _context;
 
 		public UnitOfWork(ApplicationDbContext context)
 		{

@@ -14,10 +14,12 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Admin/Products
@@ -56,12 +58,41 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
         // POST: Admin/Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        product.Id = Guid.NewGuid();
+        //        _context.Add(product);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
+        //    return View(product);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string product_path = Path.Combine(wwwRootPath, @"images\product");
+
+                    using (var file_stream = new FileStream(Path.Combine(product_path, filename), FileMode.Create))
+                    {
+                        file.CopyTo(file_stream);
+                    }
+
+                    product.ImageUrl = @"\images\product\" + filename;
+                }
+
+
                 product.Id = Guid.NewGuid();
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -70,6 +101,7 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
             return View(product);
         }
+
 
         // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(Guid? id)

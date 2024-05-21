@@ -29,10 +29,10 @@ namespace ShopApp.DataAccess.Repository
 			return await query.FirstOrDefaultAsync();
 		}
 
-		//public IEnumerable<T> GetAll()
-		//{
-		//	return _dbSet.ToList();
-		//}
+		public IEnumerable<T> GetAll()
+		{
+			return _dbSet.ToList();
+		}
 		public async Task<IEnumerable<T>> GetAllAsync()
 		{
 			return await _dbSet.ToListAsync();
