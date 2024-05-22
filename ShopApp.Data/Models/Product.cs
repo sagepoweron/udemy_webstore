@@ -25,7 +25,7 @@ namespace ShopApp.DataAccess.Models
         [Range(0, 1000)]
         public double SalePrice { get; set; }
 		
-        [Display(Name = "Image Path")]
+        [Display(Name = "Image")]
         public string? ImageUrl { get; set; }
     }
 }
