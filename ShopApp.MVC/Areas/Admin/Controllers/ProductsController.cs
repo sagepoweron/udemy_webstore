@@ -258,5 +258,24 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
 		}
 
 
-	}
+
+		#region API Calls
+
+		[HttpGet]
+
+        public async Task<IActionResult> GetAll()
+        {
+			IEnumerable<Product> products = await _context.ProductRepository.GetAllAsync(include_properties: "Category");
+
+
+			//List<Product> products = _context.ProductRepository.GetAll(include_properties: "Category").ToList();
+
+			return Json( new {data = products});
+            //return View(await query);
+        }
+
+        #endregion
+
+
+    }
 }

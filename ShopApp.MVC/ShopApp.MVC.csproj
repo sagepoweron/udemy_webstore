@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\products.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\styles.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\products.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +34,10 @@
     <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Shared\Controllers\" />
     <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\products.js" />
   </ItemGroup>
 
   <ItemGroup>
