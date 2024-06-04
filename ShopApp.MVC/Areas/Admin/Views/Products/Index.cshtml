@@ -30,11 +30,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
         </tr>
     </thead>
 </table>
 
-<h2>Old Table</h2>
+@* <h2>Old Table</h2>
 
 <table class="table">
     <thead>
@@ -57,6 +60,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
+
         </tr>
     </thead>
         <tbody>
@@ -80,7 +84,8 @@
     <td>
     @Html.DisplayFor(modelItem => item.ImageUrl)
     </td>
-    @* <td><img src="@item.ImageUrl" /></td> *@
+
+    <td><img src="@item.ImageUrl" /></td>
     <td>
     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -89,7 +94,7 @@
     </tr>
     }
     </tbody>
-</table>
+</table> *@
 
 
 

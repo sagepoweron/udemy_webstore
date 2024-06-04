@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Shared\Controllers\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
