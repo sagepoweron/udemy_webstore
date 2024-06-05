@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Models;
 
 namespace ShopApp.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -16,9 +18,12 @@ namespace ShopApp.DataAccess.Data
 
         public DbSet<Category> Category { get; set; } = default!;
 		public DbSet<Product> Product { get; set; } = default!;
+		//public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
+
 			Category category1 = new()
 			{
 				Id = Guid.NewGuid(),

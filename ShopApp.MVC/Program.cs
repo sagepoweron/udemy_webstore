@@ -43,7 +43,7 @@ namespace ShopApp.MVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            //app.UseAuthentication();
             app.UseAuthorization();
             
 

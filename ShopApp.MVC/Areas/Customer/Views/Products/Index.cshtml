@@ -6,21 +6,68 @@
 
 <h1>Products</h1>
 
-@* 
-@foreach (var item in Model)
-{
-    <div class="col-lg-3 col-sm-6">
-        <div class="row p-2">
-			<img src="\images\products\@item.ImageUrl" />
-			<div>@Html.DisplayFor(modelItem => item.Name)</div>
-			<div>@Html.DisplayFor(modelItem => item.Category.Name)</div>
+<div class="container">
+	<div class="row">
+		@foreach (var item in Model)
+		{
+			<div class="col-lg-3 col-sm-6">
+				<div class="row p-2">
+					<div class="col-12 p-1">
 
-        </div>
-    </div>
-} *@
+                        <div class="card border-0 p-3 shadow border-top border-5 rounded">
+							<img src="\images\products\@item.ImageUrl" class="card-img-top" />
+
+							<div class="card-body pb-0">
+								<div class="p-lg-1">
+									<p class="card-title h5 text-dark opacity-75 text-uppercase text-center">
+										@Html.DisplayFor(modelItem => item.Name)
+									</p>
+									<p class="card-title text-warning text-center">
+										@Html.DisplayFor(modelItem => item.Category.Name)
+									</p>
+								</div>
+								<div class="p-lg-1">
+									<p class="text-dark text-opacity-75 text-center mb-0">
+										List Price:
+										<span class="text-decoration-line-through">
+											@item.ListPrice.ToString("c")
+										</span>
+									</p>
+								</div>
+								<div class="p-lg-1">
+									<p class="text-dark text-opacity-75 text-center">
+										Sale Price:
+										<span>
+											@item.SalePrice.ToString("c")
+										</span>
+									</p>
+								</div>
+							</div>
+
+                            <div>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary bg-gradient border-0 form-control">
+                                    Details
+                                </a>
+                            </div>
+
+                        </div>
+
+						
+
+					</div>
+
+				</div>
+			</div>
+		}
+	</div>
+</div>
 
 
-<table class="table">
+
+
+
+
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -66,4 +113,4 @@
     </tr>
     }
     </tbody>
-</table>
+</table> *@
