@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Data;
+using ShopApp.DataAccess.Models;
+using ShopApp.DataAccess.Other;
 using ShopApp.DataAccess.Repository;
 using ShopApp.DataAccess.Repository.IRepository;
 
@@ -20,10 +23,16 @@ namespace ShopApp.MVC
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //builder.Services.AddRazorPages();
+
             builder.Services.AddControllersWithViews();
 
 
 			builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 			var app = builder.Build();
 
@@ -56,9 +65,7 @@ namespace ShopApp.MVC
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
-
-			app.MapRazorPages();
+            app.MapRazorPages();
 
             app.Run();
         }
