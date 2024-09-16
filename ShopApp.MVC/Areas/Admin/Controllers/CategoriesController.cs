@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Models;
+using ShopApp.DataAccess.Other;
 using ShopApp.DataAccess.Repository.IRepository;
 
 namespace ShopApp.MVC.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+	[Authorize(Roles = Helpers.Admin_Role)] //video 120
 	public class CategoriesController : Controller
 	{
 		private readonly IUnitOfWork _context;

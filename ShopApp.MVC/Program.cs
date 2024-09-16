@@ -21,20 +21,30 @@ namespace ShopApp.MVC
                 options.UseSqlite(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //builder.Services.AddRazorPages();
+			//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			//builder.Services.AddRazorPages();
+            //video 118
+			builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+				.AddDefaultTokenProviders()
+				.AddDefaultUI()
+				.AddEntityFrameworkStores<ApplicationDbContext>();
 
+            //video 120
+            //builder.Services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.LoginPath = $"/Identity/Account/Login";
+            //    options.LogoutPath = $"/Identity/Account/Logout";
+            //    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            //});
+
+            builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
 
-
 			builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>(); //video 118
 
-			var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

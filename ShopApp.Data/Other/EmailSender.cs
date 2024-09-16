@@ -9,6 +9,7 @@ namespace ShopApp.DataAccess.Other
 {
     public class EmailSender : IEmailSender
     {
+        //video 118
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             return Task.CompletedTask;
