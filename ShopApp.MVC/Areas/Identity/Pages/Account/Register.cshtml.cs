@@ -111,7 +111,8 @@ namespace ShopApp.MVC.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             //video 119
-            public string? Role { get; set; }
+            
+            public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> Roles { get; set; }
         }

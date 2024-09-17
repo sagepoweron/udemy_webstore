@@ -238,13 +238,13 @@ namespace ShopApp.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b55f4f85-1d7b-467f-8fe2-8744ffaae794"),
+                            Id = new Guid("84d71771-b33b-45d7-ad37-f611191888b1"),
                             DisplayOrder = 1,
                             Name = "Movies"
                         },
                         new
                         {
-                            Id = new Guid("139ad27a-af85-413d-b134-9fc110d93998"),
+                            Id = new Guid("f4bc0a80-2ec2-4ac0-9c1d-8be5ac89039c"),
                             DisplayOrder = 2,
                             Name = "Videogames"
                         });
@@ -284,12 +284,37 @@ namespace ShopApp.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c84585fe-45e4-433b-9479-e7d1e633f1a7"),
-                            CategoryId = new Guid("139ad27a-af85-413d-b134-9fc110d93998"),
+                            Id = new Guid("452114cf-005e-4074-8549-83e59f262359"),
+                            CategoryId = new Guid("f4bc0a80-2ec2-4ac0-9c1d-8be5ac89039c"),
                             ListPrice = 60.0,
                             Name = "Test Game",
                             SalePrice = 50.0
                         });
+                });
+
+            modelBuilder.Entity("ShopApp.DataAccess.Models.ShoppingCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("ShopApp.DataAccess.Models.ApplicationUser", b =>
@@ -299,8 +324,9 @@ namespace ShopApp.DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("TEXT");
@@ -374,6 +400,25 @@ namespace ShopApp.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShopApp.DataAccess.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("ShopApp.DataAccess.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShopApp.DataAccess.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

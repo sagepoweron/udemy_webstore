@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Test : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace ShopApp.DataAccess.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
-                    Name = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     StreetAddress = table.Column<string>(type: "TEXT", nullable: true),
                     City = table.Column<string>(type: "TEXT", nullable: true),
                     State = table.Column<string>(type: "TEXT", nullable: true),
@@ -200,19 +200,45 @@ namespace ShopApp.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Count = table.Column<int>(type: "INTEGER", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Category",
                 columns: new[] { "Id", "DisplayOrder", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("139ad27a-af85-413d-b134-9fc110d93998"), 2, "Videogames" },
-                    { new Guid("b55f4f85-1d7b-467f-8fe2-8744ffaae794"), 1, "Movies" }
+                    { new Guid("84d71771-b33b-45d7-ad37-f611191888b1"), 1, "Movies" },
+                    { new Guid("f4bc0a80-2ec2-4ac0-9c1d-8be5ac89039c"), 2, "Videogames" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Product",
                 columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "ListPrice", "Name", "SalePrice" },
-                values: new object[] { new Guid("c84585fe-45e4-433b-9479-e7d1e633f1a7"), new Guid("139ad27a-af85-413d-b134-9fc110d93998"), null, null, 60.0, "Test Game", 50.0 });
+                values: new object[] { new Guid("452114cf-005e-4074-8549-83e59f262359"), new Guid("f4bc0a80-2ec2-4ac0-9c1d-8be5ac89039c"), null, null, 60.0, "Test Game", 50.0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -255,6 +281,16 @@ namespace ShopApp.DataAccess.Migrations
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_ApplicationUserId",
+                table: "ShoppingCarts",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_ProductId",
+                table: "ShoppingCarts",
+                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -276,13 +312,16 @@ namespace ShopApp.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Category");

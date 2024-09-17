@@ -50,14 +50,13 @@ namespace ShopApp.MVC.Areas.Customer.Controllers
 			return View(product);
 		}
 
-
-		// GET: Admin/Products/Create
-		//public IActionResult Create()
-		//{
-		//    ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
-		//    return View();
-		//}
-		public IActionResult Create()
+        // GET: Admin/Products/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
+        //    return View();
+        //}
+        public IActionResult Create()
 		{
 			ViewData["CategoryId"] = new SelectList(_context.CategoryRepository.GetAll(), "Id", "Name");
 			return View();
