@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopApp.DataAccess.Models
 {
-	public class ApplicationUser : IdentityUser
+	public class EndUser : IdentityUser
 	{
 		[Required]
 		public string? Name { get; set; }

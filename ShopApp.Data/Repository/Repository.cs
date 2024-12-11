@@ -10,11 +10,13 @@ namespace ShopApp.DataAccess.Repository
         private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _dbSet;
 
+        public ApplicationDbContext Context => _context;
+
         public Repository(ApplicationDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
-            _context.Product.Include(u => u.Category);
+            _context.Products.Include(u => u.Category);
         }
 
         public void Add(T entity)
@@ -96,6 +98,11 @@ namespace ShopApp.DataAccess.Repository
         public bool Exists(Expression<Func<T, bool>> expression)
         {
             return _dbSet.Any(expression);
+        }
+
+        public int Count()
+        {
+            return _dbSet.Count();
         }
     }
 }

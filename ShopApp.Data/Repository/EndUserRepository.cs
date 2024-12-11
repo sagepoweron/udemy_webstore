@@ -4,11 +4,11 @@ using ShopApp.DataAccess.Repository.IRepository;
 
 namespace ShopApp.DataAccess.Repository
 {
-    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+    public class EndUserRepository : Repository<EndUser>, IEndUserRepository
 	{
 		private readonly ApplicationDbContext _context;
 
-		public ApplicationUserRepository(ApplicationDbContext context) : base(context)
+		public EndUserRepository(ApplicationDbContext context) : base(context)
 		{
 			_context = context;
 		}

@@ -4,8 +4,8 @@
 	{
 		ICategoryRepository CategoryRepository { get; }
 		IProductRepository ProductRepository { get; }
-		ICartItemRepository ShoppingCartRepository { get; }
-		IApplicationUserRepository ApplicationUserRepository { get; }
+		ICartRepository CartRepository { get; }
+		IEndUserRepository EndUserRepository { get; }
 
 		Task SaveAsync();
 	}

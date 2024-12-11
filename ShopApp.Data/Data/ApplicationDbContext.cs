@@ -16,10 +16,10 @@ namespace ShopApp.DataAccess.Data
         {
         }
 
-        public DbSet<Category> Category { get; set; } = default!;
-		public DbSet<Product> Product { get; set; } = default!;
-		public DbSet<ApplicationUser> ApplicationUser { get; set; }
-		public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Category> Categories { get; set; } = default!;
+		public DbSet<Product> Products { get; set; } = default!;
+		public DbSet<EndUser> EndUsers { get; set; }
+		public DbSet<Cart> Carts { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

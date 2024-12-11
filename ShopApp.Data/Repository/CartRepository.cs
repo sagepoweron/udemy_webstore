@@ -5,18 +5,18 @@ using ShopApp.DataAccess.Repository.IRepository;
 
 namespace ShopApp.DataAccess.Repository
 {
-    public class CartItemRepository : Repository<CartItem>, ICartItemRepository
+    public class CartRepository : Repository<Cart>, ICartRepository
 	{
 		private readonly ApplicationDbContext _context;
 
-        public CartItemRepository(ApplicationDbContext context) : base(context)
+        public CartRepository(ApplicationDbContext context) : base(context)
 		{
 			_context = context;
 		}
 
-		public void Update(CartItem item)
+		public void Update(Cart obj)
 		{
-			_context.Update(item);
+			_context.Update(obj);
 		}
     }
 }

@@ -7,8 +7,8 @@ namespace ShopApp.DataAccess.Repository
     {
         public ICategoryRepository CategoryRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
-        public ICartItemRepository ShoppingCartRepository { get; private set; }
-        public IApplicationUserRepository ApplicationUserRepository { get; private set; }
+        public ICartRepository CartRepository { get; private set; }
+        public IEndUserRepository EndUserRepository { get; private set; }
 
 
         private readonly ApplicationDbContext _context;
@@ -18,8 +18,8 @@ namespace ShopApp.DataAccess.Repository
             _context = context;
             CategoryRepository = new CategoryRepository(_context);
             ProductRepository = new ProductRepository(_context);
-            ShoppingCartRepository = new CartItemRepository(_context);
-            ApplicationUserRepository = new ApplicationUserRepository(_context);
+            CartRepository = new CartRepository(_context);
+            //EndUserRepository = new EndUserRepository(_context);
         }
 
         //public Task SaveAsync()

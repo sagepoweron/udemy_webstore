@@ -2,7 +2,7 @@
 
 namespace ShopApp.DataAccess.Repository.IRepository
 {
-    public interface IApplicationUserRepository : IRepository<ApplicationUser>
+    public interface IEndUserRepository : IRepository<EndUser>
 	{
 	}
 }

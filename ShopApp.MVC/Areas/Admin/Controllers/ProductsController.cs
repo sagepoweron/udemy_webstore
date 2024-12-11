@@ -55,11 +55,6 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
 
 
 		// GET: Admin/Products/Create
-		//public IActionResult Create()
-		//{
-		//    ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
-		//    return View();
-		//}
 		public IActionResult Create()
 		{
 			ViewData["CategoryId"] = new SelectList(_context.CategoryRepository.GetAll(), "Id", "Name");
@@ -70,20 +65,6 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
 		// POST: Admin/Products/Create
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product)
-		//{
-		//    if (ModelState.IsValid)
-		//    {
-		//        product.Id = Guid.NewGuid();
-		//        _context.Add(product);
-		//        await _context.SaveChangesAsync();
-		//        return RedirectToAction(nameof(Index));
-		//    }
-		//    ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
-		//    return View(product);
-		//}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Description,ListPrice,SalePrice,ImageUrl")] Product product, IFormFile? file)
@@ -91,18 +72,13 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				product.Id = Guid.NewGuid();
-				
 				product.ImageUrl = CreateImage(file);
 
-				//_context.Add(product);
-				//await _context.SaveChangesAsync();
 				_context.ProductRepository.Add(product);
 				await _context.SaveAsync();
 
 				return RedirectToAction(nameof(Index));
 			}
-
-			//ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
 			ViewData["CategoryId"] = new SelectList(_context.CategoryRepository.GetAll(), "Id", "Name", product.CategoryId);
 
 			return View(product);
@@ -123,7 +99,6 @@ namespace ShopApp.MVC.Areas.Admin.Controllers
 			{
 				return NotFound();
 			}
-			//ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", product.CategoryId);
 			ViewData["CategoryId"] = new SelectList(_context.CategoryRepository.GetAll(), "Id", "Name", product.CategoryId);
 			return View(product);
 		}

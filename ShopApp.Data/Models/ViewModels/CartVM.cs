@@ -8,7 +8,7 @@ namespace ShopApp.DataAccess.Models.ViewModels
 {
     public class CartVM
     {
-        public IEnumerable<CartItem>? CartItems { get; set; }
+        public IEnumerable<ProductCount>? CartItems { get; set; }
         public int OrderTotal { get; set; }
     }
 }

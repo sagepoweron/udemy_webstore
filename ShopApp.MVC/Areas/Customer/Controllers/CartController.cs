@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.DataAccess.Models;
 using ShopApp.DataAccess.Repository.IRepository;
+using System.Linq.Expressions;
 
 namespace ShopApp.MVC.Areas.Customer.Controllers
 {
@@ -11,32 +13,72 @@ namespace ShopApp.MVC.Areas.Customer.Controllers
         private readonly IUnitOfWork _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CartController(IUnitOfWork context, IWebHostEnvironment webHostEnvironment)
+		public CartController(IUnitOfWork context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        public async Task<IActionResult> Index()
         {
+			var query = _context.CartRepository.GetAllAsync();
+			return View(await query);
+        }
+
+        public IActionResult AddProduct(Guid id)
+        {
+            Product product = _context.ProductRepository.Get(x => x.Id == id);
+
+            AddProductToCart(product);
+
             return View();
         }
 
-        //video 133
-        public async Task<IActionResult> Details(Guid id)
+
+
+
+
+
+
+        public void AddProductToCart(Product product)
         {
-            CartItem cart_item = new()
+            if (User.Identity == null || product == null)
             {
-                Product = await _context.ProductRepository.GetAsync(expression: m => m.Id == id, include_properties: "Category"),
-                Count = 1,
-                ProductId = id
+                return;
+            }
+
+            IdentityUser user = _context.CartRepository.Context.Users.Where(user => user.UserName == User.Identity.Name).FirstOrDefault();
+
+            //EndUser user = _context.EndUserRepository.Get(user => user.UserName == User.Identity.Name);
+
+            if (user == null)
+            {
+                return;
+            }
+
+            Cart cart = _context.CartRepository.Get(cart => cart.UserId == user.Id);
+            if (cart == null)
+            {
+                cart = new()
+                {
+                    UserId = user.Id,
+                };
+                _context.CartRepository.Add(cart);
+                _context.CartRepository.Context.SaveChanges();
+            }
+
+            ProductCount product_count = new()
+            {
+                Product = product,
+                Count = 1
             };
-
-            //    var product = await _context.Product
-            //        .Include(p => p.Category)
-            //        .FirstOrDefaultAsync(m => m.Id == id);
-
-            return View(cart_item);
+            cart.ProductCounts.Add(product_count);
+            
         }
-    }
+	}
 }
